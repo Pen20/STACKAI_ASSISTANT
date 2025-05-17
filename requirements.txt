@@ -8,4 +8,6 @@ python-dotenv
 streamlit 
 matplotlib 
 seaborn 
-
+faiss-cpu
+sentence-transformers
+neo4j
