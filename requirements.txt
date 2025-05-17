@@ -2,8 +2,10 @@ langchain
 langchain-community
 langchain-openai
 langchain-experimental
-neo4j
 ipykernel
 pandas
 python-dotenv
+streamlit 
+matplotlib 
+seaborn 
 
