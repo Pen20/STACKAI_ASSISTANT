@@ -1,2 +1,3 @@
 myvenv
 .env
+/workspaces/Feedback_Error_Chatbot/app/__pycache__

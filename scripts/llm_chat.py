@@ -21,10 +21,12 @@ chat_prompt = ChatPromptTemplate.from_messages([
      "2. Recommend targeted learning resources or remedial strategies.\n"
      "3. Provide clear, evidence-based, and pedagogically sound explanations.\n"
      "4. Tailor your feedback based on each student's question, grade, and response history.\n\n"
-     "Always respond in a supportive, constructive tone. Assume the user is seeking actionable insights to support student learning and improvement."
+     "Always respond in a supportive, constructive tone. Assume the user is seeking actionable insights to support student learning and improvement.\n\n"
+     "Note: If the student ID is not present in the data provided, assume the student answered correctly and no errors were detected."
     ),
     ("human", "Context:\n{context}\n\nChat History:\n{chat_history}\n\nQuestion: {question}")
 ])
+
 
 
 def ask_llm(question: str, context: str = "", chat_history: str = "") -> str:
