@@ -1,11 +1,4 @@
 myvenv
-.env
-/workspaces/Feedback_Error_Chatbot/app/__pycache__
-scripts/__pycache__/llm_chat.cpython-310.pyc
-llm_chat.cpython-310.pyc
-scripts/__pycache__/llm_chat.cpython-310.pyc
-scripts/__pycache__/llm_chat.cpython-310.pyc
-scripts/__pycache__/llm_chat.cpython-310.pyc
-scripts/__pycache__/llm_chat.cpython-312.pyc
-app/__pycache__/visualizations.cpython-312.pyc
-app/__pycache__/visualizations.cpython-312.pyc
+secrets.toml
+.openai_key_cache.txt
+

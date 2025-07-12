@@ -11,3 +11,11 @@ The interface includes:
 This assistant helps visualize key learning patterns and supports **data-driven decision-making** in the classroom.
 
 ![Educational Feedback Analysis Assistant Screenshot](chatbot_screenshot.png)
+
+Setting Up the Environment
+1. Create and Activate Virtual Environment
+python3 -m venv myvenv
+source myvenv/bin/activate
+
+2. Install Dependencies
+pip install -r requirements.txt
