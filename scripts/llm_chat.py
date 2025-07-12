@@ -1,16 +1,21 @@
-# scripts/llm_chat.py
-import sys
-import warnings
-sys.modules['warnings'] = warnings  # Prevents LangChain KeyError
-
-import os
-from dotenv import load_dotenv
+import streamlit as st
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 
-load_dotenv()
+# --- Enforce use of user-provided API key only ---
+user_key = st.session_state.get("OPENAI_API_KEY")
 
-llm = ChatOpenAI(model="gpt-4o", temperature=0.2)
+if not user_key:
+    st.error("A valid OpenAI API key is required. Please enter it in the sidebar.")
+    st.stop()
+
+# --- Optional model fallback from secrets, default is 'gpt-4' ---
+model_name = st.secrets.get("OPENAI_MODEL", "gpt-4o")
+
+# --- Initialize LLM instance with user's key ---
+llm = ChatOpenAI(model=model_name, temperature=0.2, api_key=user_key)
+
+# --- Prompt Template ---
 
 chat_prompt = ChatPromptTemplate.from_messages([
     ("system", 

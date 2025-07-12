@@ -1,4 +1,22 @@
 myvenv
 secrets.toml
 .openai_key_cache.txt
+# Python cache files
+__pycache__/
+*.py[cod]
+
+# Virtual environment
+myvenv/
+venv/
+.env
+
+# Jupyter Notebook checkpoints (if any)
+.ipynb_checkpoints/
+
+# VSCode config (optional)
+.vscode/
+
+# OS-specific
+.DS_Store
+Thumbs.db
 
