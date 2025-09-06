@@ -1,5 +1,9 @@
 ## 🎓 Educational Feedback Analysis Assistant
 
+https://github.com/user-attachments/assets/d438bb77-e992-4565-bb45-33e68b05b9d0
+
+
+
 An **AI-powered chatbot application** built with **Streamlit**, designed to support educators in diagnosing student learning challenges.  
 Unlike previous versions, this tool **does not use a Neo4j knowledge graph**, but provides an intuitive interface for uploading datasets and receiving **targeted feedback on student errors**.
 
