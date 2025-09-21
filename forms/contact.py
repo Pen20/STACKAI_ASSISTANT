@@ -1,16 +1,36 @@
-import streamlit as st
 import re
-from pymongo import MongoClient
 from datetime import datetime
+from typing import Tuple
+
+import streamlit as st
+from pymongo import MongoClient
+from pymongo.errors import PyMongoError
+
+
+@st.cache_resource(show_spinner=False)
+def _get_mongo_client(uri: str) -> MongoClient:
+    return MongoClient(uri, serverSelectionTimeoutMS=5000)
+
+
+def _get_mongo_settings() -> Tuple[str, str, str]:
+    required_keys = ("MONGO_URI", "MONGO_DB", "MONGO_COLLECTION")
+    missing = [key for key in required_keys if key not in st.secrets]
+    if missing:
+        raise RuntimeError(
+            "MongoDB connection details are not configured. "
+            "Please add MONGO_URI, MONGO_DB, and MONGO_COLLECTION to Streamlit secrets."
+        )
+
+    return tuple(st.secrets[key] for key in required_keys)
 
 def is_valid_email(email):
     return re.match(r"^[\w\.-]+@[\w\.-]+\.\w+$", email)
 
 def save_message_to_mongo(name, email, message):
-    client = MongoClient(st.secrets["MONGO_URI"])
-    db = client[st.secrets["MONGO_DB"]]
-    collection = db[st.secrets["MONGO_COLLECTION"]]
-    
+    uri, database, collection_name = _get_mongo_settings()
+    client = _get_mongo_client(uri)
+    collection = client[database][collection_name]
+
     doc = {
         "name": name,
         "email": email,
@@ -19,7 +39,6 @@ def save_message_to_mongo(name, email, message):
     }
 
     collection.insert_one(doc)
-    client.close()
 
 def contact_form():
     with st.form("contact_form"):
@@ -45,5 +64,7 @@ def contact_form():
         try:
             save_message_to_mongo(name, email, message)
             st.success("🎉 Your message has been submitted successfully!")
-        except Exception as e:
-            st.error(f"Error saving message: {e}")
+        except RuntimeError as exc:
+            st.error(str(exc))
+        except PyMongoError as exc:
+            st.error(f"Error saving message: {exc}")
