@@ -18,8 +18,14 @@ Setting Up the Environment
 1. Create and Activate Virtual Environment
 ```
 python3 -m venv myvenv
-source myvenv/bin/activate
+
 ```
 
 2. Install Dependencies
+```
 pip install -r requirements.txt
+```
+3. Run
+```
+streamlit run streamlit_app.py
+```

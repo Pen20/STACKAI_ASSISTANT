@@ -2,18 +2,16 @@ import streamlit as st
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 
-# --- Enforce use of user-provided API key only ---
-user_key = st.session_state.get("OPENAI_API_KEY")
-
-if not user_key:
-    st.error("A valid OpenAI API key is required. Please enter it in the sidebar.")
-    st.stop()
-
-# --- Optional model fallback from secrets, default is 'gpt-4' ---
-model_name = st.secrets.get("OPENAI_MODEL", "gpt-4o")
-
-# --- Initialize LLM instance with user's key ---
-llm = ChatOpenAI(model=model_name, temperature=0.2, api_key=user_key)
+# --- Safe key + LLM fetch ---
+def get_llm():
+    user_key = st.session_state.get("OPENAI_API_KEY")
+    if not user_key:
+        return None, "⚠️ No API key provided."
+    
+    # define model_name inside the function so it's always available
+    model_name = st.secrets.get("OPENAI_MODEL", "gpt-4o")
+    llm = ChatOpenAI(model=model_name, temperature=0.2, api_key=user_key)
+    return llm, None
 
 # --- Prompt Template ---
 
@@ -49,6 +47,9 @@ chat_prompt = ChatPromptTemplate.from_messages([
 
 # --- LLM Interaction Function ---
 def ask_llm(question: str, context: str = "", chat_history: str = "") -> str:
+    llm, err = get_llm()
+    if err:
+        return err
     try:
         chain = chat_prompt | llm
         response = chain.invoke({
@@ -58,4 +59,4 @@ def ask_llm(question: str, context: str = "", chat_history: str = "") -> str:
         })
         return response.content.strip()
     except Exception as e:
-        return f"⚠️ Failed to fetch response from LLM: {e}"    
+        return f"⚠️ Failed to fetch response from LLM: {e}"

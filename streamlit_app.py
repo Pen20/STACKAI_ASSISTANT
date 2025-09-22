@@ -1,5 +1,8 @@
 import streamlit as st
 from pathlib import Path
+from scripts.llm_chat import ask_llm
+
+
 
 # === GLOBAL SIDEBAR OPENAI KEY HANDLING ===
 CACHE_PATH = Path(".openai_key_cache.txt")
