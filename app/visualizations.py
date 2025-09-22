@@ -14,15 +14,15 @@ def grade_distribution(df):
     df['grade'] = pd.to_numeric(df['grade'], errors='coerce')
     df = df.dropna(subset=["grade"])
 
-    plt.figure(figsize=(8, 5))
-    sns.histplot(df['grade'], bins=10, kde=True)
-    plt.title("Grade Distribution")
-    plt.xlabel("Grade")
-    plt.ylabel("Frequency")
-    plt.grid(True)
-    plt.tight_layout()
-    st.pyplot(plt)
-    plt.clf()
+    fig, ax = plt.subplots(figsize=(8, 5))
+    sns.histplot(df['grade'], bins=10, kde=True, ax=ax)
+    ax.set_title("Grade Distribution")
+    ax.set_xlabel("Grade")
+    ax.set_ylabel("Frequency")
+    ax.grid(True)
+    fig.tight_layout()
+    st.pyplot(fig)
+    plt.close(fig)
 
 def difficulty_discrimination(df):
     if not all(col in df.columns for col in ["question", "grade", "student_id"]):
@@ -71,10 +71,19 @@ def difficulty_discrimination(df):
     x = np.arange(len(analysis_results["question"]))
     bar_width = 0.35
 
-    bars1 = ax.bar(x - bar_width/2, analysis_results["difficulty_index"],
-                   width=bar_width, label='Difficulty Index')
-    bars2 = ax.bar(x + bar_width/2, analysis_results["discrimination_index"],
-                   width=bar_width, label='Discrimination Index', color='orange')
+    bars1 = ax.bar(
+        x - bar_width / 2,
+        analysis_results["difficulty_index"],
+        width=bar_width,
+        label='Difficulty Index',
+    )
+    bars2 = ax.bar(
+        x + bar_width / 2,
+        analysis_results["discrimination_index"],
+        width=bar_width,
+        label='Discrimination Index',
+        color='orange',
+    )
 
     ax.set_xlabel('Question')
     ax.set_ylabel('Index Value')
@@ -87,14 +96,17 @@ def difficulty_discrimination(df):
     for bars in [bars1, bars2]:
         for bar in bars:
             height = bar.get_height()
-            ax.annotate(f'{height:.2f}',
-                        xy=(bar.get_x() + bar.get_width() / 2, height),
-                        xytext=(0, 3),
-                        textcoords="offset points",
-                        ha='center', va='bottom')
+            ax.annotate(
+                f'{height:.2f}',
+                xy=(bar.get_x() + bar.get_width() / 2, height),
+                xytext=(0, 3),
+                textcoords="offset points",
+                ha='center',
+                va='bottom',
+            )
 
     st.pyplot(fig)
-    plt.clf()
+    plt.close(fig)
 
 def top_n_error_types(df, question, n=10):
     if "question" not in df.columns or "error_summary" not in df.columns:
@@ -102,22 +114,39 @@ def top_n_error_types(df, question, n=10):
         return
 
     df_filtered = df[df["question"] == question]
+    if df_filtered.empty:
+        st.info("No responses available for the selected question.")
+        return
+
     errors = df_filtered["error_summary"].dropna().str.lower().str.split(", ").explode()
+    if errors.empty:
+        st.info("No error summaries available to visualize.")
+        return
+
     counts = Counter(errors)
-    summary_df = pd.DataFrame(counts.items(), columns=["Error Type", "Frequency"]).sort_values(by="Frequency", ascending=False).reset_index(drop=True)
+    summary_df = (
+        pd.DataFrame(counts.items(), columns=["Error Type", "Frequency"])
+        .sort_values(by="Frequency", ascending=False)
+        .reset_index(drop=True)
+    )
 
     total = summary_df["Frequency"].sum()
+    if total == 0:
+        st.info("No error occurrences found for the selected question.")
+        return
+
     summary_df["Percentage"] = (summary_df["Frequency"] / total * 100).round(2)
     top_df = summary_df.head(n)
 
-    ax = top_df.plot(kind='barh', x='Error Type', y='Percentage', legend=False, figsize=(10, 6))
+    fig, ax = plt.subplots(figsize=(10, 6))
+    ax.barh(top_df["Error Type"], top_df["Percentage"], color="#1f77b4")
     ax.invert_yaxis()
     ax.set_xlabel("Percentage (%)")
     ax.set_ylabel("Error Type")
     ax.set_title(f"Top {len(top_df)} Error Types for {question}")
-    plt.tight_layout()
-    st.pyplot(plt)
-    plt.clf()
+    fig.tight_layout()
+    st.pyplot(fig)
+    plt.close(fig)
 
 def pie_chart_nea(df, question):
     if "question" not in df.columns or "error_category" not in df.columns:
@@ -126,24 +155,35 @@ def pie_chart_nea(df, question):
 
     q_error_cat = df[df["question"] == question]["error_category"].dropna()
     error_cat_types = q_error_cat.str.lower().str.split(", ").explode()
+    if error_cat_types.empty:
+        st.info("No NEA error categories available for the selected question.")
+        return
+
     error_cat_counts = Counter(error_cat_types)
 
-    error_cat_df = pd.DataFrame(error_cat_counts.items(), columns=["Error Category", "Frequency"])
-    error_cat_df = error_cat_df.sort_values(by="Frequency", ascending=False).reset_index(drop=True)
+    error_cat_df = (
+        pd.DataFrame(error_cat_counts.items(), columns=["Error Category", "Frequency"])
+        .sort_values(by="Frequency", ascending=False)
+        .reset_index(drop=True)
+    )
     total_cat_errors = error_cat_df["Frequency"].sum()
+    if total_cat_errors == 0:
+        st.info("No NEA error categories available for the selected question.")
+        return
+
     error_cat_df["Percentage"] = (error_cat_df["Frequency"] / total_cat_errors * 100).round(2)
 
     top_cat_df = error_cat_df.head(4)
     others_pct = round(100 - top_cat_df["Percentage"].sum(), 2)
 
-    labels = top_cat_df["Error Category"].tolist() + (["reading errors"] if others_pct > 0 else [])
+    labels = top_cat_df["Error Category"].tolist() + (["Others"] if others_pct > 0 else [])
     sizes = top_cat_df["Percentage"].tolist() + ([others_pct] if others_pct > 0 else [])
     colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#9467bd', '#8c564b'][:len(labels)]
 
     fig, ax = plt.subplots()
     ax.pie(sizes, labels=labels, autopct='%1.1f%%', colors=colors)
     ax.axis('equal')
-    plt.title(f'Distribution of NEA Categories for {question}')
-    plt.tight_layout()
-    st.pyplot(plt)
-    plt.clf()
+    ax.set_title(f'Distribution of NEA Categories for {question}')
+    fig.tight_layout()
+    st.pyplot(fig)
+    plt.close(fig)

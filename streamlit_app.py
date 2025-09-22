@@ -4,6 +4,14 @@ from scripts.llm_chat import ask_llm
 
 
 
+
+st.set_page_config(
+    page_title="Educational Feedback Analysis Assistant",
+    page_icon="🤖",
+    layout="wide",
+)
+
+
 # === GLOBAL SIDEBAR OPENAI KEY HANDLING ===
 CACHE_PATH = Path(".openai_key_cache.txt")
 
@@ -18,6 +26,7 @@ with st.sidebar:
         st.session_state.OPENAI_API_KEY = user_key
         if st.checkbox("💾 Remember key on this device"):
             CACHE_PATH.write_text(user_key)
+
 
 # --- PAGE SETUP ---
 about_page = st.Page(
