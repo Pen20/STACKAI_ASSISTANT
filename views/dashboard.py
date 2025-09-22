@@ -25,7 +25,6 @@ st.markdown(
     """
 )
 
-
 uploaded_file = st.sidebar.file_uploader("Upload CSV file", type="csv")
 
 # Initialize session state for toggles
@@ -87,6 +86,35 @@ if df is not None:
     if st.session_state.show_difficulty:
         with st.spinner("Calculating difficulty and discrimination indices..."):
             vis.difficulty_discrimination(df)
+            
+                # --- Interpretation Help Section ---
+        with st.expander("ℹ️ How to Interpret Difficulty & Discrimination Indices"):
+            st.markdown(
+                """
+                **Difficulty Index (DI):**
+                - Measures how easy or hard a question is for students.
+                - **< 0.30** → Highly difficult (few students succeed).
+                - **0.30 – 0.70** → Moderate difficulty (balanced).
+                - **> 0.70** → Easy (most students succeed).
+
+                **Discrimination Index (DiscI):**
+                - Indicates how well a question separates **high-performing students from low-performing students**.
+
+                **Interpretation (with ranges):**
+
+                | Discrimination Index (DiscI) | Interpretation | Action |
+                |------------------------------|----------------|--------|
+                | **≥ 0.40**                   | Excellent discrimination | Keep the item; highly reliable |
+                | **0.30 – 0.39**              | Good discrimination | Acceptable, but could be improved |
+                | **0.20 – 0.29**              | Fair discrimination | Marginal; may need revision |
+                | **< 0.20**                   | Poor discrimination | Weak item; likely needs redesign |
+                | **= 0.00**                   | No discrimination | Does not differentiate at all |
+                | **Negative (< 0.00)**        | Flawed item | Inverse relation: weaker students perform better than stronger ones → item is problematic |
+
+                ✅ *Tip: Ideally, a good question has **moderate difficulty (0.30–0.70)** and **strong discrimination (≥ 0.30)**.*
+                """
+            )
+    
 
     if st.session_state.show_top_errors and selected_question:
         with st.spinner("Creating error type plot..."):
@@ -95,5 +123,38 @@ if df is not None:
     if st.session_state.show_pie_chart and selected_question:
         with st.spinner("Generating NEA pie chart..."):
             vis.pie_chart_nea(df, selected_question)
+
+        # --- Interpretation Help Section for NEA Errors ---
+        with st.expander("ℹ️ How to Interpret NEA Error Categories"):
+            st.markdown(
+                """
+                **Newman’s Error Analysis (NEA) Categories:**
+
+                1. **Reading Error** 📝  
+                   - Misreading or misinterpreting a mathematical problem’s text or symbols. 
+                   - This stage involves assessing whether the learner correctly identifies all components of the question. 
+                   - Example: confusing a “+” sign with a “–” sign.  
+
+                2. **Comprehension Error** 🤔  
+                   - Student reads correctly but fails to grasp the meaning of the problem. 
+                   - Difficulties in this stage are often related to language barriers, cognitive overload, or lack of prior knowledge. 
+                   - Example: doesn’t understand what the question is asking.  
+
+                3. **Transformation Error** 🔄  
+                   - Student understands the problem but fails to convert it into a mathematical representation.  
+                   - Example: setting up the wrong equation or establishing an incorrect logical sequence of steps.  
+
+                4. **Process Skills Error** ⚙️  
+                   - Correct transformation but incorrect calculations, methods, or procedures.  
+                   - Example: arithmetic mistakes.  
+
+                5. **Encoding Error** ✍️  
+                   - Correct solution reached but expressed incorrectly in the final answer.  
+                   - Example: decimal point error, miswriting units, or notation mistakes.  
+
+                ✅ *Tip: Use these categories to see not just whether students are wrong, but **why** they are wrong — this helps target teaching interventions.*
+                """
+            )
+
 else:
     st.info("Awaiting dataset to proceed with visualizations.")
