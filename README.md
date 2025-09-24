@@ -6,6 +6,7 @@ An **AI-powered chatbot application** built with **Streamlit**, designed to supp
 Unlike previous versions, this tool **does not use a Neo4j knowledge graph**, but provides an intuitive interface for uploading datasets and receiving **targeted feedback on student errors**.
 
 The interface includes:
+
 - 📊 Interactive buttons for exploring **grade distributions**
 - 📈 Visualization of **item difficulty and discrimination indices**
 - 🧠 Analysis of the **different stages of student errors** based on educational theory
@@ -15,17 +16,66 @@ This assistant helps visualize key learning patterns and supports **data-driven 
  <img width="1278" height="674" alt="chatbot_image" src="https://github.com/user-attachments/assets/5eb5a083-f1ca-4510-b0db-10645701aa88" />
 
 Setting Up the Environment
-1. Create and Activate Virtual Environment
+
+1. Create and Activate Virtual Environment on macOS
+
 ```
-python3 -m venv myvenv
+python3 -m venv ErrorVenv
+source ErrorVenv/bin/activate
+```
+
+2. Run this manually before installing your libraries:
+
+```
+pip install --upgrade pip setuptools wheel
 
 ```
 
-2. Install Dependencies
+3. Next dev-style requirement should be
+
+```
+# Strict dependency to avoid Arrow breaking issues
+"pyarrow<16"
+
+# App framework
+streamlit==1.35.0
+
+# Env and core
+python-dotenv
+pandas
+numpy
+
+# LLM / Langchain
+langchain
+langchain-community
+langchain-openai
+openai
+
+# Database
+pymongo
+
+# Visualization
+matplotlib
+seaborn
+```
+
+4. Once everything works perfectly locally, run
+
+```
+pip freeze > requirements.txt
+
+```
+
+5. Install Dependencies
+
 ```
 pip install -r requirements.txt
 ```
+
 3. Run
+
 ```
 streamlit run streamlit_app.py
+./ErrorVenv/bin/streamlit run streamlit_app.py
+
 ```
