@@ -32,20 +32,9 @@ python -m venv myvenv
 myvenv\Scripts\activate
 ```
 
-2. Identify the necessary libraries and run:
+2. Identify the necessary libraries
 
-```
-pip install -r requirements.txt
-```
-
-3. Once everything works perfectly locally, run
-
-```
-pip freeze > requirements.txt
-
-```
-
-4. Install Dependencies
+3. Install Dependencies
 
 ```
 pip install -r requirements.txt
@@ -55,6 +44,4 @@ pip install -r requirements.txt
 
 ```
 streamlit run streamlit_app.py
-./ErrorVenv/bin/streamlit run streamlit_app.py
-
 ```
