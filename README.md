@@ -20,8 +20,8 @@ Setting Up the Environment
 1. Create and Activate Virtual Environment on macOS
 
 ```
-python3 -m venv ErrorVenv
-source ErrorVenv/bin/activate
+python3 -m venv myvenv
+source myvenv/bin/activate
 
 ```
 
