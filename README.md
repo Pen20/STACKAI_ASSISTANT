@@ -22,57 +22,36 @@ Setting Up the Environment
 ```
 python3 -m venv ErrorVenv
 source ErrorVenv/bin/activate
-```
-
-2. Run this manually before installing your libraries:
-
-```
-pip install --upgrade pip setuptools wheel
 
 ```
 
-3. Next dev-style requirement should be
+Setup on windows
 
 ```
-# Strict dependency to avoid Arrow breaking issues
-"pyarrow<16"
-
-# App framework
-streamlit==1.35.0
-
-# Env and core
-python-dotenv
-pandas
-numpy
-
-# LLM / Langchain
-langchain
-langchain-community
-langchain-openai
-openai
-
-# Database
-pymongo
-
-# Visualization
-matplotlib
-seaborn
+python -m venv myvenv
+myvenv\Scripts\activate
 ```
 
-4. Once everything works perfectly locally, run
+2. Identify the necessary libraries and run:
+
+```
+pip install -r requirements.txt
+```
+
+3. Once everything works perfectly locally, run
 
 ```
 pip freeze > requirements.txt
 
 ```
 
-5. Install Dependencies
+4. Install Dependencies
 
 ```
 pip install -r requirements.txt
 ```
 
-3. Run
+4. Run
 
 ```
 streamlit run streamlit_app.py
