@@ -38,7 +38,8 @@ if df is not None:
         context = df.head(100).to_csv(index=False)
         chat_history_text = "\n".join([f"User: {q}\nBot: {a}" for q, a in st.session_state.chat_history])
         try:
-            answer = ask_llm(user_query, context, chat_history_text)
+            with st.spinner("🤖 Thinking... Please wait..."):
+                answer = ask_llm(user_query, context, chat_history_text)
             st.session_state.chat_history.append((user_query, answer))
             st.markdown(f"**Answer:** {answer}")
         except Exception as e:
