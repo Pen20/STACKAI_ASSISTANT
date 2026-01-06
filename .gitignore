@@ -1,27 +1,44 @@
-myvenv
-secrets.toml
-.openai_key_cache.txt
-# Python cache files
-__pycache__/
-*.py[cod]
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# Virtual environment
-myvenv/
-venv/
-.env
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
 
-# Jupyter Notebook checkpoints (if any)
-.ipynb_checkpoints/
+# testing
+/coverage
 
-# VSCode config (optional)
-.vscode/
+# next.js
+/.next/
+/out/
 
-# OS-specific
+# production
+/build
+
+# misc
 .DS_Store
-Thumbs.db
+*.pem
 
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
 
-__pycache__/
-*.pyc
-*.pyo
-.openai_key_cache
+# env files (can opt-in for committing if needed)
+.env*
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+# data files
+data/
+.env.local

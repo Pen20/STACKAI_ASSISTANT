@@ -1,47 +1,36 @@
-## 🎓 Educational Feedback Analysis Assistant
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-https://github.com/user-attachments/assets/d438bb77-e992-4565-bb45-33e68b05b9d0
+## Getting Started
 
-An **AI-powered chatbot application** built with **Streamlit**, designed to support educators in diagnosing student learning challenges.  
-Unlike previous versions, this tool **does not use a Neo4j knowledge graph**, but provides an intuitive interface for uploading datasets and receiving **targeted feedback on student errors**.
+First, run the development server:
 
-The interface includes:
-
-- 📊 Interactive buttons for exploring **grade distributions**
-- 📈 Visualization of **item difficulty and discrimination indices**
-- 🧠 Analysis of the **different stages of student errors** based on educational theory
-
-This assistant helps visualize key learning patterns and supports **data-driven decision-making** in the classroom.
-
- <img width="1278" height="674" alt="chatbot_image" src="https://github.com/user-attachments/assets/5eb5a083-f1ca-4510-b0db-10645701aa88" />
-
-Setting Up the Environment
-
-1. Create and Activate Virtual Environment on macOS
-
-```
-python3 -m venv myvenv
-source myvenv/bin/activate
-
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
-Setup on windows
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-```
-python -m venv myvenv
-myvenv\Scripts\activate
-```
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-2. Identify the necessary libraries
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-3. Install Dependencies
+## Learn More
 
-```
-pip install -r requirements.txt
-```
+To learn more about Next.js, take a look at the following resources:
 
-4. Run
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-```
-streamlit run streamlit_app.py
-```
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
